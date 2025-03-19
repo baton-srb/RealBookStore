@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="RealBookStore [sonar:sonar]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
+  <configuration default="false" name="RealBookStore [sonar:sonar...]" type="MavenRunConfiguration" factoryName="Maven" nameIsGenerated="true">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings">
@@ -7,7 +7,7 @@
           <option name="delegateBuildToMaven" value="false" />
           <option name="environmentProperties">
             <map>
-              <entry key="SONAR_TOKEN" value="&lt;insert_token_here&gt;" />
+              <entry key="SONAR_TOKEN" value="sqp_a6639b41daa1452176e4678cdc2945fa642294a6" />
             </map>
           </option>
           <option name="jreName" value="#USE_PROJECT_JDK" />
@@ -22,21 +22,18 @@
       </option>
       <option name="myRunnerParameters">
         <MavenRunnerParameters>
-          <option name="cmdOptions" />
           <option name="profiles">
             <set />
           </option>
           <option name="goals">
             <list>
               <option value="sonar:sonar" />
+              <option value="-Dsonar.login=sqp_a6639b41daa1452176e4678cdc2945fa642294a6" />
             </list>
           </option>
           <option name="pomFileName" />
           <option name="profilesMap">
             <map />
-          </option>
-          <option name="projectsCmdOptionValues">
-            <list />
           </option>
           <option name="resolveToWorkspace" value="false" />
           <option name="workingDirPath" value="$PROJECT_DIR$" />
