@@ -48,3 +48,46 @@ values (1, 3),
        (3, 1),
        (4, 2);
 
+insert into permissions(id, name)
+values
+    (1, 'ADD_COMMENT'),
+    (2, 'VIEW_BOOKS_LIST'),
+    (3, 'CREATE_BOOK'),
+    (4, 'VIEW_PERSONS_LIST'),
+    (5, 'VIEW_PERSON'),
+    (6, 'UPDATE_PERSON'),
+    (7, 'VIEW_MY_PROFILE'),
+    (8, 'RATE_BOOK');
+
+
+insert into role_to_permissions(roleId, permissionId)
+values
+    (1, 1), -- ADMIN: ADD_COMMENT
+    (1, 2), -- ADMIN: VIEW_BOOKS_LIST
+    (1, 3), -- ADMIN: CREATE_BOOK
+    (1, 4), -- ADMIN: VIEW_PERSONS_LIST
+    (1, 5), -- ADMIN: VIEW_PERSON
+    (1, 6), -- ADMIN: UPDATE_PERSON
+    (1, 7), -- ADMIN: VIEW_MY_PROFILE
+    (1, 8), -- ADMIN: RATE_BOOK
+
+    (2, 1), -- MANAGER: ADD_COMMENT
+    (2, 2), -- MANAGER: VIEW_BOOKS_LIST
+    (2, 4), -- MANAGER: VIEW_PERSONS_LIST
+    (2, 5), -- MANAGER: VIEW_PERSON
+    (2, 6), -- MANAGER: UPDATE_PERSON
+    (2, 7), -- MANAGER: VIEW_MY_PROFILE
+    (2, 8), -- MANAGER: RATE_BOOK
+
+    (3, 1), -- REVIEWER: ADD_COMMENT
+    (3, 2), -- REVIEWER: VIEW_BOOKS_LIST
+    (3, 7), -- REVIEWER: VIEW_MY_PROFILE
+    (3, 8); -- REVIEWER: RATE_BOOK
+
+insert into user_to_roles(userId, roleId)
+values
+    (1, 3), -- Tom je ADMIN
+    (2, 2), -- ToeLover je MANAGER
+    (3, 1), -- Bruce je REVIEWER
+    (4, 1); -- Sam je REVIEWER
+

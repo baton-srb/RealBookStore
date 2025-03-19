@@ -5,6 +5,7 @@ import com.urosdragojevic.realbookstore.domain.User;
 import com.urosdragojevic.realbookstore.repository.CommentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +21,7 @@ public class CommentController {
         this.commentRepository = commentRepository;
     }
 
+    @PreAuthorize("hasAuthority('CREATE_COMMENT')")
     @PostMapping(value = "/comments")
     public String createComment(@ModelAttribute Comment comment, Authentication authentication) {
         User user = (User) authentication.getPrincipal();

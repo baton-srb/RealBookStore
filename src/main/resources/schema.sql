@@ -69,23 +69,23 @@ create table comments
 );
 
 create table user_to_roles(
-    userId         int          NOT NULL,
-    roleId         int          NOT NULL
+                              userId         int          NOT NULL,
+                              roleId         int          NOT NULL
 );
 
 create table roles(
-    id             identity          NOT NULL,
-    name           varchar(255) NOT NULL,
-    PRIMARY KEY (ID)
+                      id             identity          NOT NULL,
+                      name           varchar(255) NOT NULL,
+                      PRIMARY KEY (ID)
 );
 
 create table permissions(
-    id             identity          NOT NULL,
-    name           varchar(255) NOT NULL,
-    PRIMARY KEY (ID)
+                            id             identity          NOT NULL,
+                            name           varchar(255) NOT NULL,
+                            PRIMARY KEY (ID)
 );
 
 create table role_to_permissions(
-    roleId         int          NOT NULL,
-    permissionId   int          NOT NULL
+                                    roleId         int          NOT NULL,
+                                    permissionId   int          NOT NULL
 );

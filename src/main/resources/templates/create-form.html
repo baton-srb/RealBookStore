@@ -9,7 +9,7 @@
     <title>Create form</title>
 </head>
 <body>
-<div layout:fragment="content">
+<div layout:fragment="content" th:if="${#authorization.expression('hasAuthority(''CREATE_BOOK'')')}">
     <h1>Add book</h1>
     <div class="row">
         <form class="col-5" method="POST" th:action="@{/books}">

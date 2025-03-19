@@ -3,6 +3,7 @@ package com.urosdragojevic.realbookstore.controller;
 import com.urosdragojevic.realbookstore.domain.*;
 import com.urosdragojevic.realbookstore.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +31,14 @@ public class BooksController {
     @Autowired
     private PersonRepository personRepository;
 
+    @PreAuthorize("hasAuthority('VIEW_BOOKS_LIST')")
     @GetMapping({"/", "/books"})
     public String home(Model model) {
         model.addAttribute("books", bookRepository.getAll());
         return "books";
     }
 
+    @PreAuthorize("hasAuthority('VIEW_BOOKS_LIST')")
     @GetMapping("/books/{id}")
     public String book(Model model, @PathVariable int id) {
 
@@ -67,18 +70,21 @@ public class BooksController {
         return "book";
     }
 
+    @PreAuthorize("hasAuthority('CREATE_BOOK')")
     @GetMapping("/create-form")
     public String CreateForm(Model model) {
         model.addAttribute("genres", genreRepository.getAll());
         return "create-form";
     }
 
+    @PreAuthorize("hasAuthority('VIEW_BOOKS_LIST')")
     @GetMapping(value = "/books/search", produces = "application/json")
     @ResponseBody
     public List<Book> search(@RequestParam("query") String query) throws SQLException {
         return bookRepository.search(query);
     }
 
+    @PreAuthorize("hasAuthority('CREATE_BOOK')")
     @PostMapping("/books")
     public String createBook(NewBook book) {
         List<Genre> genreList = this.genreRepository.getAll();
