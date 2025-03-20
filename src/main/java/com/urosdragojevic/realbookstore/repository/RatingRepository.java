@@ -1,5 +1,6 @@
 package com.urosdragojevic.realbookstore.repository;
 
+import com.urosdragojevic.realbookstore.audit.AuditLogger;
 import com.urosdragojevic.realbookstore.domain.Rating;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import java.util.List;
 public class RatingRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(RatingRepository.class);
+    private static final AuditLogger auditLogger = AuditLogger.getAuditLogger(RatingRepository.class);
     private DataSource dataSource;
 
     public RatingRepository(DataSource dataSource) {
@@ -35,6 +37,7 @@ public class RatingRepository {
                     preparedStatement.setInt(2, rating.getBookId());
                     preparedStatement.setInt(3, rating.getUserId());
                     preparedStatement.executeUpdate();
+                    auditLogger.audit("User " + rating.getUserId() + " updated rating for book " + rating.getBookId() + " to " + rating.getRating());
                 }
             } else {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(query3)) {
@@ -42,10 +45,11 @@ public class RatingRepository {
                     preparedStatement.setInt(2, rating.getUserId());
                     preparedStatement.setInt(3, rating.getRating());
                     preparedStatement.executeUpdate();
+                    auditLogger.audit("User " + rating.getUserId() + " rated book " + rating.getBookId() + " with " + rating.getRating());
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Rating createOrUpdate failed", e);
         }
     }
 
@@ -59,7 +63,7 @@ public class RatingRepository {
                 ratingList.add(new Rating(rs.getInt(1), rs.getInt(2), rs.getInt(3)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Rating getAll failed", e);
         }
         return ratingList;
     }

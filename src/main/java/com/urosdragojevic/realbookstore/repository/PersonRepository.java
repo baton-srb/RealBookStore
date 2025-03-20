@@ -33,7 +33,7 @@ public class PersonRepository {
                 personList.add(createPersonFromResultSet(rs));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Person search failed", e);
         }
         return personList;
     }
@@ -48,6 +48,8 @@ public class PersonRepository {
             while (rs.next()) {
                 personList.add(createPersonFromResultSet(rs));
             }
+        } catch (SQLException e) {
+            LOG.error("Person search failed", e);
         }
         return personList;
     }
@@ -61,7 +63,7 @@ public class PersonRepository {
                 return createPersonFromResultSet(rs);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Person get failed", e);
         }
 
         return null;
@@ -73,8 +75,9 @@ public class PersonRepository {
              Statement statement = connection.createStatement();
         ) {
             statement.executeUpdate(query);
+            auditLogger.audit("Deleted person with ID: " + personId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Person delete failed", e);
         }
     }
 
@@ -88,6 +91,7 @@ public class PersonRepository {
 
     public void update(Person personUpdate) {
         Person personFromDb = get(personUpdate.getId());
+
         String query = "UPDATE persons SET firstName = ?, lastName = '" + personUpdate.getLastName() + "', email = ? where id = " + personUpdate.getId();
 
         try (Connection connection = dataSource.getConnection();
@@ -98,8 +102,9 @@ public class PersonRepository {
             statement.setString(1, firstName);
             statement.setString(2, email);
             statement.executeUpdate();
+            auditLogger.audit("Updated person with name: " + firstName + "and email: " + email);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Person update failed", e);
         }
     }
 }

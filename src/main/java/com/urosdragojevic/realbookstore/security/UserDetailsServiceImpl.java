@@ -1,5 +1,6 @@
 package com.urosdragojevic.realbookstore.security;
 
+import com.urosdragojevic.realbookstore.audit.AuditLogger;
 import com.urosdragojevic.realbookstore.domain.Permission;
 import com.urosdragojevic.realbookstore.domain.User;
 import com.urosdragojevic.realbookstore.repository.UserRepository;
@@ -30,7 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findUser(username);
+        AuditLogger auditLogger = AuditLogger.getAuditLogger(UserDetailsServiceImpl.class);
         if (user == null) {
+            auditLogger.audit("User " + username + " failed to logg in");
             throw new UsernameNotFoundException("Username not found");
         }
 
@@ -42,6 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setAuthorities(authorities);
 
         LOG.info("User '{}' has authorities '{}'", username, user.getAuthorities());
+        auditLogger.audit("User " + username + " logged in with permissions " + user.getAuthorities());
         return user;
     }
 }

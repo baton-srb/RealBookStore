@@ -1,5 +1,6 @@
 package com.urosdragojevic.realbookstore.repository;
 
+import com.urosdragojevic.realbookstore.audit.AuditLogger;
 import com.urosdragojevic.realbookstore.domain.Comment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import java.util.List;
 public class CommentRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(CommentRepository.class);
-
+    private static final AuditLogger auditLogger = AuditLogger.getAuditLogger(CommentRepository.class);
 
     private DataSource dataSource;
 
@@ -32,8 +33,9 @@ public class CommentRepository {
             statement.setInt(2, comment.getUserId());
             statement.setString(3, comment.getComment());
             statement.executeUpdate();
+            auditLogger.audit("User " + comment.getUserId() + " commented on book " + comment.getBookId() + ": '" + comment.getComment() + "'");
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Comment create failed", e);
         }
     }
 
@@ -47,7 +49,7 @@ public class CommentRepository {
                 commentList.add(new Comment(rs.getInt(1), rs.getInt(2), rs.getString(3)));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOG.error("Comment getAll failed", e);
         }
         return commentList;
     }
